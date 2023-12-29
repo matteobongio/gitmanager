@@ -45,17 +45,17 @@ fn main() {
                 None => {
                     println!("Current: {}", git_account);
                     println!("---Available---");
-                    for i in 0..accounts.len() {
-                        println!("{}) {}", i, accounts[i]);
+                    for ( i, account ) in accounts.iter().enumerate() {
+                        println!("{}) {}", i, account);
                     }
                 },
                 Some(n) => {
                     println!("---Available---");
-                    for account in 0..accounts.len() {
-                        if account == n {
-                            println!("Current: {}) {}", account, git_account);
+                    for ( i, account ) in accounts.iter().enumerate() {
+                        if i == n {
+                            println!("Current: {}) {}", i, git_account);
                         } else {
-                            println!("{}) {}", account, accounts[account]);
+                            println!("{}) {}", i, account);
                         }
                     }
                 }
