@@ -1,6 +1,6 @@
 use std::process;
 
-use clap::{Parser, ValueEnum, Subcommand};
+use clap::{Parser, Subcommand};
 use config::Account;
 mod config;
 
@@ -53,7 +53,7 @@ fn main() {
                     println!("---Available---");
                     for account in 0..accounts.len() {
                         if account == n {
-                            println!("Current: {}", git_account);
+                            println!("Current: {}) {}", account, git_account);
                         } else {
                             println!("{}) {}", account, accounts[account]);
                         }
@@ -72,8 +72,12 @@ fn main() {
             config::update_acounts(accounts, &config_path);
         },
         Commands::Set { account } => {
-            process::Command::new("git").args(["config", "--local", "user.name", &accounts[account].name]);
-            process::Command::new("git").args(["config", "--local", "user.email", &accounts[account].email]);
+            if account < accounts.len() {
+                process::Command::new("git")
+                    .args(["config", "--local", "user.name", &accounts[account].name]).output().unwrap();
+                process::Command::new("git")
+                    .args(["config", "--local", "user.email", &accounts[account].email]).output().unwrap();
+            }
         }
     }
 }
