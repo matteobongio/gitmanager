@@ -4,7 +4,6 @@ use clap::{Parser, Subcommand};
 use config::Account;
 mod config;
 
-
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 struct Args {
@@ -19,9 +18,7 @@ enum Commands {
     /// adds a new account
     Add,
     /// set current account
-    Set {
-        account: usize
-    }
+    Set { account: usize },
 }
 
 fn main() {
@@ -32,8 +29,16 @@ fn main() {
     match args.mode {
         Commands::List => {
             // get current config
-            let git_name = process::Command::new("git").args(["config", "user.name"]).output().expect("unable to interact with git CLI").stdout;
-            let git_email = process::Command::new("git").args(["config", "user.email"]).output().expect("unable to interact with git CLI").stdout;
+            let git_name = process::Command::new("git")
+                .args(["config", "user.name"])
+                .output()
+                .expect("unable to interact with git CLI")
+                .stdout;
+            let git_email = process::Command::new("git")
+                .args(["config", "user.email"])
+                .output()
+                .expect("unable to interact with git CLI")
+                .stdout;
             let mut git_name = String::from_utf8(git_name).expect("Unable to understand name");
             let mut git_email = String::from_utf8(git_email).expect("unable to understand email");
             //get rid of trailing \n
@@ -45,13 +50,13 @@ fn main() {
                 None => {
                     println!("Current: {}", git_account);
                     println!("---Available---");
-                    for ( i, account ) in accounts.iter().enumerate() {
+                    for (i, account) in accounts.iter().enumerate() {
                         println!("{}) {}", i, account);
                     }
-                },
+                }
                 Some(n) => {
                     println!("---Available---");
-                    for ( i, account ) in accounts.iter().enumerate() {
+                    for (i, account) in accounts.iter().enumerate() {
                         if i == n {
                             println!("Current: {}) {}", i, git_account);
                         } else {
@@ -60,7 +65,7 @@ fn main() {
                     }
                 }
             }
-        },
+        }
         Commands::Add => {
             let mut email: String = String::new();
             let mut name: String = String::new();
@@ -70,13 +75,17 @@ fn main() {
             scanf::scanf!("{}", email).expect("unable to read email");
             accounts.push(Account::new(name, email));
             config::update_acounts(accounts, &config_path);
-        },
+        }
         Commands::Set { account } => {
             if account < accounts.len() {
                 process::Command::new("git")
-                    .args(["config", "--local", "user.name", &accounts[account].name]).output().expect("unable to process git command");
+                    .args(["config", "--local", "user.name", &accounts[account].name])
+                    .output()
+                    .expect("unable to process git command");
                 process::Command::new("git")
-                    .args(["config", "--local", "user.email", &accounts[account].email]).output().expect("unable to process git command");
+                    .args(["config", "--local", "user.email", &accounts[account].email])
+                    .output()
+                    .expect("unable to process git command");
             }
         }
     }

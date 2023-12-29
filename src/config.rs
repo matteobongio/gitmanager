@@ -1,18 +1,19 @@
-use serde::{Serialize, Deserialize};
-use std::{fs::{read_to_string, create_dir_all}, path::PathBuf, fmt};
-use ron::{ from_str, to_string };
+use ron::{from_str, to_string};
+use serde::{Deserialize, Serialize};
+use std::{
+    fmt,
+    fs::{create_dir_all, read_to_string},
+    path::PathBuf,
+};
 #[derive(Serialize, Deserialize, PartialEq, Eq)]
 pub struct Account {
     pub name: String,
-    pub email: String
+    pub email: String,
 }
 
 impl Account {
     pub fn new(name: String, email: String) -> Account {
-        Account {
-            name,
-            email
-        }
+        Account { name, email }
     }
 }
 
