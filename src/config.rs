@@ -41,5 +41,5 @@ pub fn get_accounts(path: &PathBuf) -> Vec<Account> {
 
 pub fn update_acounts(accounts: Vec<Account>, path: &PathBuf) {
     let str = to_string(&accounts).expect("unable to serialize data");
-    std::fs::write(path, &str).expect("unable to write accounts to config file");
+    std::fs::write(path, str).expect("unable to write accounts to config file");
 }
