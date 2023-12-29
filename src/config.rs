@@ -1,11 +1,10 @@
-use serde::{Serialize, Deserialize, ser::SerializeMap};
-use toml::{to_string_pretty, from_str};
+use serde::{Serialize, Deserialize};
 use std::{fs::{read_to_string, create_dir_all}, path::PathBuf, fmt};
-
+use ron::{ from_str, to_string };
 #[derive(Serialize, Deserialize, PartialEq, Eq)]
 pub struct Account {
-    name: String,
-    email: String
+    pub name: String,
+    pub email: String
 }
 
 impl Account {
@@ -41,6 +40,6 @@ pub fn get_accounts(path: &PathBuf) -> Vec<Account> {
 }
 
 pub fn update_acounts(accounts: Vec<Account>, path: &PathBuf) {
-    let str = to_string_pretty(&accounts).unwrap();
+    let str = to_string(&accounts).unwrap();
     std::fs::write(path, &str).expect("unable to write accounts to config file");
 }
