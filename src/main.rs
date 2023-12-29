@@ -34,8 +34,8 @@ fn main() {
             // get current config
             let git_name = process::Command::new("git").args(["config", "user.name"]).output().expect("unable to interact with git CLI").stdout;
             let git_email = process::Command::new("git").args(["config", "user.email"]).output().expect("unable to interact with git CLI").stdout;
-            let mut git_name = String::from_utf8(git_name).unwrap();
-            let mut git_email = String::from_utf8(git_email).unwrap();
+            let mut git_name = String::from_utf8(git_name).expect("Unable to understand name");
+            let mut git_email = String::from_utf8(git_email).expect("unable to understand email");
             //get rid of trailing \n
             git_name.pop();
             git_email.pop();
@@ -74,9 +74,9 @@ fn main() {
         Commands::Set { account } => {
             if account < accounts.len() {
                 process::Command::new("git")
-                    .args(["config", "--local", "user.name", &accounts[account].name]).output().unwrap();
+                    .args(["config", "--local", "user.name", &accounts[account].name]).output().expect("unable to process git command");
                 process::Command::new("git")
-                    .args(["config", "--local", "user.email", &accounts[account].email]).output().unwrap();
+                    .args(["config", "--local", "user.email", &accounts[account].email]).output().expect("unable to process git command");
             }
         }
     }

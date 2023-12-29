@@ -23,23 +23,23 @@ impl fmt::Display for Account {
 }
 
 pub fn get_config() -> PathBuf {
-    let mut path = dirs::config_dir().unwrap();
+    let mut path = dirs::config_dir().expect("Where tf is your config dir?");
     path.push("gitmanager");
     create_dir_all(&path).expect("Cannot create configuration directory");
-    path.push("config.toml");
+    path.push("config.ron");
     path
 }
 
 pub fn get_accounts(path: &PathBuf) -> Vec<Account> {
     if path.exists() {
         let file = read_to_string(path).expect("unable to read accounts from config file.");
-        from_str(&file).unwrap()
+        from_str(&file).expect("unable to deserialize RON data")
     } else {
         Vec::new()
     }
 }
 
 pub fn update_acounts(accounts: Vec<Account>, path: &PathBuf) {
-    let str = to_string(&accounts).unwrap();
+    let str = to_string(&accounts).expect("unable to serialize data");
     std::fs::write(path, &str).expect("unable to write accounts to config file");
 }
