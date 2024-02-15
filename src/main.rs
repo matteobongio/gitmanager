@@ -51,7 +51,7 @@ fn main() {
                     println!("Current: {}", git_account);
                     println!("---Available---");
                     for (i, account) in accounts.iter().enumerate() {
-                        println!("{}) {}", i, account);
+                        println!("         {}) {}", i, account);
                     }
                 }
                 Some(n) => {
@@ -60,7 +60,7 @@ fn main() {
                         if i == n {
                             println!("Current: {}) {}", i, git_account);
                         } else {
-                            println!("{}) {}", i, account);
+                            println!("         {}) {}", i, account);
                         }
                     }
                 }
